@@ -5,7 +5,7 @@
    [fe-10x.routes :as routes]
    [fe-10x.subs :as subs]
 
-   [fe-10x.pages.signin.view]
+   [fe-10x.pages.auth.view]
    ))
 
 

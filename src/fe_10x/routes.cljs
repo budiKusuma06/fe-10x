@@ -12,7 +12,7 @@
   (atom
     ["/" {""      :home
           "about" :about
-          "signin" :signin}]))
+          "auth" :auth}]))
 
 (defn parse
   [url]
