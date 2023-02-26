@@ -1,0 +1,1 @@
+["^ ","~$label",["^ ","~:row",4,"~:col",1,"~:fixed-arities",["~#set",[2]],"~:name","^0","~:ns","~$fe-10x.components.input.label","~:top-ns","^7","~:arities",["^ ","~i2",["^ ","~:ret","~:fn","~:arglist-str","[labl type]"]],"~:type","^;"],"~:filename","/home/noisy/clojure/src/fe-10x/src/fe_10x/components/input/label.cljs"]

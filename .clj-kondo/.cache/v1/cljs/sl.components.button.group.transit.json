@@ -1,0 +1,1 @@
+["^ ","~$label",["^ ","~:row",4,"~:col",1,"~:fixed-arities",["~#set",[2]],"~:name","^0","~:ns","~$sl.components.button.group","~:top-ns","^7","~:arities",["^ ","~i2",["^ ","~:ret","~:vector","~:arglist-str","[menu sume]"]],"~:type","~:fn"],"~:filename","/home/noisy/clojure/src/fe-10x/src/fe_10x/components/button/group.cljs"]

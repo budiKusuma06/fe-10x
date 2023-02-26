@@ -1,0 +1,1 @@
+["^ ","~$tooltips",["^ ","~:row",4,"~:col",1,"~:fixed-arities",["~#set",[3]],"~:name","^0","~:ns","~$fe-10x.components.input.icon","~:top-ns","^7","~:arities",["^ ","~i3",["^ ","~:ret","~:vector","~:arglist-str","[labl mesg type]"]],"~:type","~:fn"],"~:filename","/home/noisy/clojure/src/fe-10x/src/fe_10x/components/input/icon.cljs"]
