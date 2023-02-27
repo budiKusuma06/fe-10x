@@ -9,7 +9,7 @@
 
 (def text-color-normal (re-frame/subscribe [::subs/text-color-normal]))
 
-(defn signin []
+(defn signin [{:keys [email set-email]}]
  (let [show-password? (r/atom false)
        set-show-password #(swap! show-password? not)]
    (fn []
@@ -17,12 +17,12 @@
       ;; header
       [:div {:class "slds-col slds-text-heading_medium"
              :style {:color @text-color-normal}}
-       "Sign in"]
+       "Sign in " @email]
       ;; form
       [:div {:class "slds-col slds-p-top_medium"}
-       [input-label/label "Email" "text"]]
+       [input-label/label "Email" @email "text" set-email]]
       [:div {:class "slds-col slds-p-top_x-small"}
-       [input-label/label "Password" (if @show-password? "text" "password")]]
+       [input-label/label "Password" "" (if @show-password? "text" "password")]]
       ;; checkbox
       [:div {:class "slds-col slds-p-top_medium"}
        [checkbox/base {:labl "Show password" :evnt set-show-password}]]
@@ -94,7 +94,8 @@
           [btn-label/primary "Reset" false]]]]])))
 
 (defn auth []
-  (let [email (r/atom "")
+  (let [email (r/atom "jack")
+        set-email #(reset! email (-> % .-target .-value))
         password (r/atom "")
         
         signin? (r/atom true)
@@ -118,7 +119,7 @@
                :style {:border "1px solid #c5c5c5"
                        :border-radius "4px"
                        :background-color "#fff"}}
-         (when @signin? [signin])
+         (when @signin? [signin {:email email :set-email set-email}])
          (when @forget? [forget-password])
          (when @reset? [reset-password])]]
        [:div {:class "slds-col slds-size_1-of-12"}]])))

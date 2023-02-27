@@ -4,9 +4,10 @@
 (defn rand-str [len]
   (apply str (take len (repeatedly #(char (+ (rand 26) 65))))))
 
-(defn label [{:keys [labl type]}]
+(defn label [{:keys [labl value type evnt]}]
   (let [rand (rand-str 20)]
     (fn [{:keys [labl type]}]
+      (println value)
       [:div {:class "slds-form-element"}
        [:label {:class "slds-form-element__label"
                 :for rand}
@@ -15,7 +16,10 @@
         [:input (merge {:class "slds-input"}
                        {:id rand}
                        {:type type}
-                       {:placeholder labl})]]])))
+                       {:placeholder labl}
+                      ;;  {:value value}
+                       {:on-change evnt}
+                       )]]])))
 
 (defn tooltips [{:keys [labl mesg type]}]
   (let [rand (rand-str 20)]
