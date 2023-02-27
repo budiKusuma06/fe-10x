@@ -10,8 +10,8 @@
 (def text-color-normal (re-frame/subscribe [::subs/text-color-normal]))
 
 (defn signin []
- (let [password? (r/atom false)
-       set-password #(swap! password? not)]
+ (let [show-password? (r/atom false)
+       set-show-password #(swap! show-password? not)]
    (fn []
      [:div
       ;; header
@@ -22,10 +22,10 @@
       [:div {:class "slds-col slds-p-top_medium"}
        [input-label/label "Email" "text"]]
       [:div {:class "slds-col slds-p-top_x-small"}
-       [input-label/label "Password" "password"]]
+       [input-label/label "Password" (if @show-password? "text" "password")]]
       ;; checkbox
       [:div {:class "slds-col slds-p-top_medium"}
-       [checkbox/base {:labl "Show password" :evnt set-password}]]
+       [checkbox/base {:labl "Show password" :evnt set-show-password}]]
       ;; note
       [:div {:class "slds-col slds-p-top_medium"
              :style {:color @text-color-normal}}
@@ -68,8 +68,8 @@
           [btn-label/primary "Send" false]]]]])))
 
 (defn reset-password []
-  (let [password? (r/atom false)
-        set-password #(swap! password? not)]
+  (let [show-password? (r/atom false)
+        set-show-password #(swap! show-password? not)]
     (fn []
       [:div
        ;; header
@@ -78,12 +78,12 @@
         "Reset password"]
        ;; form
        [:div {:class "slds-col slds-p-top_medium"}
-        [input-label/label "Password" "password"]]
+        [input-label/label "Password" (if @show-password? "text" "password")]]
        [:div {:class "slds-col slds-p-top_medium"}
-        [input-label/label "Confirm password" "password"]]
+        [input-label/label "Confirm password" (if @show-password? "text" "password")]]
        ;; checkbox
        [:div {:class "slds-col slds-p-top_medium"}
-        [checkbox/base {:labl "Show password" :evnt set-password}]]
+        [checkbox/base {:labl "Show password" :evnt set-show-password}]]
        ;; button
        [:div {:class "slds-col slds-p-top_large"}
         [:div {:class "slds-grid slds-gutters"

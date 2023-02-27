@@ -6,7 +6,7 @@
 
 (defn label [{:keys [labl type]}]
   (let [rand (rand-str 20)]
-    (fn [type]
+    (fn [{:keys [labl type]}]
       [:div {:class "slds-form-element"}
        [:label {:class "slds-form-element__label"
                 :for rand}
