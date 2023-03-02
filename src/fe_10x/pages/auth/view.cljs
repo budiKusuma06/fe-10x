@@ -4,32 +4,49 @@
             [fe-10x.routes :as routes]
             [reagent.core :as r]
             [fe-10x.components.button.label :as btn-label]
+            [fe-10x.components.button.label-lt :as btn-lt]
             [fe-10x.components.input.label :as input-label]
             [fe-10x.components.checkbox.template :as checkbox]))
 
 (def text-color-normal (re-frame/subscribe [::subs/text-color-normal]))
 
-(defn signin [{:keys [email set-email]}]
+(defn signin [_]
  (let [show-password? (r/atom false)
        set-show-password #(swap! show-password? not)]
-   (fn []
-     [:div
+   (fn [{:keys [email set-email password set-password set-signin]}]
+     [:div {:style {:width "320px"}}
       ;; header
       [:div {:class "slds-col slds-text-heading_medium"
              :style {:color @text-color-normal}}
-       "Sign in " @email]
+       "Sign in"]
       ;; form
       [:div {:class "slds-col slds-p-top_medium"}
-       [input-label/label "Email" @email "text" set-email]]
+       [input-label/label 
+        "Email"
+        @email 
+        "text" 
+        false 
+        false 
+        {:error? false :mesg "ada yang salah nih"} 
+        set-email]]
       [:div {:class "slds-col slds-p-top_x-small"}
-       [input-label/label "Password" "" (if @show-password? "text" "password")]]
+       [input-label/label 
+        "Password" 
+        @password 
+        (if @show-password? "text" "password") 
+        false 
+        false 
+        {:error? false :mesg "ada yang salah nih"} 
+        set-password]]
       ;; checkbox
       [:div {:class "slds-col slds-p-top_medium"}
-       [checkbox/base {:labl "Show password" :evnt set-show-password}]]
+       [checkbox/base 
+        {:labl "Show password" :evnt set-show-password}]]
       ;; note
       [:div {:class "slds-col slds-p-top_medium"
              :style {:color @text-color-normal}}
-       [:div {:class "slds-p-horizontal_x-small"} "Not your device? Use a Private Window to sign in."]]
+       [:div {:class "slds-p-horizontal_x-small"} 
+        "Not your device? Use a Private Window to sign in."]]
       ;; button
       [:div {:class "slds-col slds-p-top_medium"}
        [:div {:class "slds-grid slds-gutters"
@@ -37,23 +54,36 @@
         [:div {:class "slds-col"
                :style {:display "flex"
                        :justify-content "flex-start"}}
-         [btn-label/base "Forgot password" false]]
+         [:div {:on-click set-signin}
+          [btn-label/base 
+           "Forgot password" 
+           false]]]
         [:div {:class "slds-col"
                :style {:display "flex"
                        :justify-content "flex-end"}}
-         [btn-label/primary "Sign in" false]]]]])))
+         [:div
+          [btn-label/primary 
+           "Sign in" 
+           false]]]]]])))
 
-(defn forget-password []
+(defn forget-password [_]
   (let []
-    (fn []
-      [:div
+    (fn [{:keys [email set-email set-signin]}]
+      [:div {:style {:width "320px"}}
        ;; header
        [:div {:class "slds-col slds-text-heading_medium"
               :style {:color @text-color-normal}}
         "Forget password"]
        ;; form
        [:div {:class "slds-col slds-p-top_medium"}
-        [input-label/label "Email" "text"]]
+        [input-label/label 
+         "Email" 
+         @email 
+         "text" 
+         false 
+         false 
+         {:error? false :mesg "ada yang salah nih"} 
+         set-email]]
        ;; button
        [:div {:class "slds-col slds-p-top_large"}
         [:div {:class "slds-grid slds-gutters"
@@ -61,52 +91,31 @@
          [:div {:class "slds-col"
                 :style {:display "flex"
                         :justify-content "flex-start"}}
-          [btn-label/base "Back" false]]
+          [:div {:on-click set-signin}
+           [btn-lt/base 
+            "Cancel" 
+            "back" 
+            false]]]
          [:div {:class "slds-col"
                 :style {:display "flex"
                         :justify-content "flex-end"}}
-          [btn-label/primary "Send" false]]]]])))
-
-(defn reset-password []
-  (let [show-password? (r/atom false)
-        set-show-password #(swap! show-password? not)]
-    (fn []
-      [:div
-       ;; header
-       [:div {:class "slds-col slds-text-heading_medium"
-              :style {:color @text-color-normal}}
-        "Reset password"]
-       ;; form
-       [:div {:class "slds-col slds-p-top_medium"}
-        [input-label/label "Password" (if @show-password? "text" "password")]]
-       [:div {:class "slds-col slds-p-top_medium"}
-        [input-label/label "Confirm password" (if @show-password? "text" "password")]]
-       ;; checkbox
-       [:div {:class "slds-col slds-p-top_medium"}
-        [checkbox/base {:labl "Show password" :evnt set-show-password}]]
-       ;; button
-       [:div {:class "slds-col slds-p-top_large"}
-        [:div {:class "slds-grid slds-gutters"
-               :style {:display "flex"}}
-         [:div {:class "slds-col"
-                :style {:display "flex"
-                        :justify-content "flex-end"}}
-          [btn-label/primary "Reset" false]]]]])))
+          [:div
+           [btn-label/primary 
+            "Send" 
+            false]]]]]])))
 
 (defn auth []
-  (let [email (r/atom "jack")
+  (let [email (r/atom "")
         set-email #(reset! email (-> % .-target .-value))
+
         password (r/atom "")
-        
+        set-password #(reset! password (-> % .-target .-value)) 
+
         signin? (r/atom true)
-        set-signin #(swap! signin? not)
 
-        forget? (r/atom false)
-        set-forget #(swap! forget? not)
-
-        reset? (r/atom false)
-        set-reset #(swap! reset? not)] 
-    (fn []
+        set-signin (fn []
+                     (swap! signin? not))] 
+    (fn [] 
       [:div {:class "slds-grid slds-gutters"
              :style {:width "100vw"
                      :height "100vh"}}
@@ -119,9 +128,16 @@
                :style {:border "1px solid #c5c5c5"
                        :border-radius "4px"
                        :background-color "#fff"}}
-         (when @signin? [signin {:email email :set-email set-email}])
-         (when @forget? [forget-password])
-         (when @reset? [reset-password])]]
+         (if @signin?
+           [signin {:email email 
+                    :set-email set-email 
+                    :password password 
+                    :set-password set-password 
+                    :set-signin set-signin}]
+           [forget-password {:email email 
+                             :set-email set-email 
+                             :set-signin set-signin}]) 
+         ]]
        [:div {:class "slds-col slds-size_1-of-12"}]])))
 
 (defmethod routes/panels :auth-panel [] [auth])
